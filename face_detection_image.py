@@ -19,8 +19,9 @@ def face_detection():
     
     if img is None:
         sys.exit("Could not open the image file")
-    
-    gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+        
+    img_resize = cv.resize(img, (1080,720))
+    gray = cv.cvtColor(img_resize, cv.COLOR_BGR2GRAY)
     
     faces = face_cascade.detectMultiScale(
         image=gray,
@@ -28,10 +29,10 @@ def face_detection():
         minNeighbors=4,
         minSize=(120,120)
         )
-    img_resize = cv.resize(img, (1080,720))
+    
     
     for (x, y, h, w) in faces:
-        cv.rectangle(img, (x, y), (x+h, y+w), (255, 0, 0), 2)
+        cv.rectangle(img_resize, (x, y), (x+h, y+w), (255, 0, 0), 2)
         cv.imwrite('./images/'+ str(frameno) +'.pgm', gray[y:y+w,x:x+h],[cv.IMWRITE_PXM_BINARY,0])
         frameno += 1
         
