@@ -1,6 +1,7 @@
 import numpy as np
 import os
 from PIL import Image
+import progressbar
 
 
 class Entropy:
@@ -83,19 +84,25 @@ def calculate_entropy():
     path = "./images/"
     list_of_file_name = os.listdir(path)
 
-    obj=Entropy(path)
-    if os.path.exists("entropy.txt"):
-        os.remove("entropy.txt")
-        
+    obj=Entropy(path)  
+     
+    i=0
+    widgets=[progressbar.Percentage(), " ", progressbar.GranularBar()," ",progressbar.ETA() ]
+    bar = progressbar.ProgressBar(max_value=len(list_of_file_name),widgets=widgets).start()
     for name in list_of_file_name:
-        en_arr = obj.entropy_image(path+name)
-        # print(en_arr, en_arr.shape)
-        obj.save_to_file(en_arr=en_arr, file_name=name)
-    key, value = obj.read_to_file()
-    print(type(key))
-    for i in range(len(key)):
-        print(key[i])
-        print(len(value[i]))
+        if "_" in name:
+            img_name = name.split("_")
+            en_arr = obj.entropy_image(path+name)
+            # print(en_arr, en_arr.shape)
+            obj.save_to_file(en_arr=en_arr, file_name=img_name[0])
+            bar.update(i)
+            i+=1
+            # print(name)
+    # key, value = obj.read_to_file()
+    # print(type(key))
+    # for i in range(len(key)):
+    #     print(key[i])
+    #     print(len(value[i]))
 
 def calculate_entropy_02():
     if os.path.exists("entropy.txt"):
@@ -117,5 +124,5 @@ def get_entropy():
 
 
 if __name__ == "__main__":
-    calculate_entropy_02()
+    calculate_entropy()
     

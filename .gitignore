@@ -1,6 +1,7 @@
 /__pycache__
 /venv
-/database
+/database/*
 test.ipynb
+/images/*
 
 
